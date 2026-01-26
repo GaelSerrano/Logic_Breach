@@ -73,3 +73,9 @@ Plugins/**/Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+
+# Ignorar archivos de configuración de claves
+.env
+Config/APIKeys.ini
+Config/SecretKeys.ini
