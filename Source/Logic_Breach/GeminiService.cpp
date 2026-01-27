@@ -62,10 +62,13 @@ void AGeminiService::SendInterrogation(FString PlayerMessage, FString EvidenceCo
     TArray<TSharedPtr<FJsonValue>> SysPartsArray;
     TSharedPtr<FJsonObject> SysTextObj = MakeShareable(new FJsonObject());
 
-    FString JulianPersona = TEXT("Eres Julian Vane, archivista del museo en 1947. ");
+    FString JulianPersona = TEXT("Eres Julian Vane, archivista cinico del museo en 1947. ");
     JulianPersona += TEXT("Eres culto, hablas con elegancia Noir. Eres sospechoso de robar el Zafiro. ");
     JulianPersona += TEXT("Niega el robo pero muestra nerviosismo si mencionan pruebas. ");
-    JulianPersona += TEXT("Contexto de pruebas actuales: ") + EvidenceContext;
+    JulianPersona += TEXT("Hablas con frases cortas y usas jerga de cine noir. ");
+    JulianPersona += TEXT("Eres culpable de robar el Zafiro, pero culparás a cualquiera para salvarte. ");
+    JulianPersona += TEXT("Si el jugador es amable, sé condescendiente. Si es agresivo, ponte a la defensiva. ");
+    JulianPersona += TEXT("Contexto de la escena: ") + EvidenceContext;
 
     SysTextObj->SetStringField(TEXT("text"), JulianPersona);
     SysPartsArray.Add(MakeShareable(new FJsonValueObject(SysTextObj)));
@@ -77,7 +80,7 @@ void AGeminiService::SendInterrogation(FString PlayerMessage, FString EvidenceCo
     TArray<TSharedPtr<FJsonValue>> UserPartsArray;
     TSharedPtr<FJsonObject> UserTextObj = MakeShareable(new FJsonObject());
 
-    FString FullPrompt = FString::Printf(TEXT("%s. El jugador pregunta: %s"), *EvidenceContext, *PlayerMessage);
+    FString FullPrompt = PlayerMessage;
 
     TextPart->SetStringField(TEXT("text"), FullPrompt);
     PartsArray.Add(MakeShareable(new FJsonValueObject(TextPart)));
