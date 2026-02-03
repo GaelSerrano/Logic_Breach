@@ -24,6 +24,5 @@ public:
 private:
     void OnResponseReceived(FHttpRequestPtr Request, FHttpResponsePtr Response, bool bWasSuccessful);
 
-    // Solo mantenemos la URL base. La clave se cargará dinámicamente.
     //FString ApiUrl = TEXT("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent");
 };

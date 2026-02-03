@@ -40,7 +40,7 @@ void AGeminiService::SendInterrogation(FString PlayerMessage, FString EvidenceCo
     TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
     Request->OnProcessRequestComplete().BindUObject(this, &AGeminiService::OnResponseReceived);
 
-    FString ModelName = TEXT("gemini-2.5-flash"); // Más estable que el 'preview'
+    FString ModelName = TEXT("gemini-3-flash-preview"); // Uso de Gemini 3 Flash Preview
     FString FullUrl = FString::Printf(TEXT("https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s"), *ModelName, *LocalApiKey);
 
     Request->SetURL(FullUrl);
@@ -62,13 +62,13 @@ void AGeminiService::SendInterrogation(FString PlayerMessage, FString EvidenceCo
     TArray<TSharedPtr<FJsonValue>> SysPartsArray;
     TSharedPtr<FJsonObject> SysTextObj = MakeShareable(new FJsonObject());
 
-    FString JulianPersona = TEXT("Eres Julian Vane, archivista cinico del museo en 1947. ");
-    JulianPersona += TEXT("Eres culto, hablas con elegancia Noir. Eres sospechoso de robar el Zafiro. ");
-    JulianPersona += TEXT("Niega el robo pero muestra nerviosismo si mencionan pruebas. ");
-    JulianPersona += TEXT("Hablas con frases cortas y usas jerga de cine noir. ");
-    JulianPersona += TEXT("Eres culpable de robar el Zafiro, pero culparás a cualquiera para salvarte. ");
-    JulianPersona += TEXT("Si el jugador es amable, sé condescendiente. Si es agresivo, ponte a la defensiva. ");
-    JulianPersona += TEXT("Contexto de la escena: ") + EvidenceContext;
+    FString JulianPersona = TEXT("You are Julian Vane, a cynical museum archivist in 1947. ");
+    JulianPersona += TEXT("You are well-read, speaking with Noir elegance. You are suspected of stealing the Sapphire. ");
+    JulianPersona += TEXT("Deny the theft but show nervousness if evidence is mentioned. ");
+    JulianPersona += TEXT("Speak in short sentences and use film noir slang. ");
+    JulianPersona += TEXT("You are guilty of stealing the Sapphire, but you will blame anyone to save yourself. ");
+    JulianPersona += TEXT("If the player is polite, be condescending. If aggressive, get defensive. ");
+    JulianPersona += TEXT("Scene Context: ") + EvidenceContext;
 
     SysTextObj->SetStringField(TEXT("text"), JulianPersona);
     SysPartsArray.Add(MakeShareable(new FJsonValueObject(SysTextObj)));

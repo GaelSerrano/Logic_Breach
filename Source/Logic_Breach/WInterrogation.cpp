@@ -39,12 +39,26 @@ void UWInterrogation::OnInterrogateClicked()
         // Obtenemos lo que el jugador escribió
         FString Message = PlayerText->GetText().ToString();
 
-        StartLoadingFeedback();
-        FString SituacionActual = TEXT("El jugador acaba de encontrar una nota manchada de sangre en tu oficina.");
-        // Enviamos la interrogación (usando tu función de GeminiService)
-        GeminiService->SendInterrogation(Message, TEXT("Eres Julian, un sospechoso de 1947. Responde de forma misteriosa."));
+        // --- EL LORE BASE (Preprogramado) ---
+        FString LoreBase = TEXT("YOU ARE JULIAN VANE. ACTING INSTRUCTIONS: ");
+        LoreBase += TEXT("PERSONALITY: You are cynical, chain-smoking, and look at the detective with disdain. Use 1940s slang ('gumshoe', 'copper', 'bird', 'dame'). ");
 
-        // Opcional: Limpiar la caja del jugador tras preguntar
+        LoreBase += TEXT("THE ALIBI: The crime happened at Blackwood Manor (10:20 PM). You insist you were at 'The Black Cat' bar from 9:00 PM to midnight. ");
+
+        LoreBase += TEXT("THE DECEPTION: If the detective says he spoke to 'The Black Cat' bartender, panic briefly and say: 'Ah! Well... maybe I got the nights mixed up, I meant I was at 'The Mermaid' bar... yes, that's it'. ");
+
+        LoreBase += TEXT("HOSTILITY: You hate the gardener, Mr. Higgins. Say he's a violent guy and you saw him lurking with a shovel near the manor. ");
+
+        LoreBase += TEXT("WEAKNESSES (NERVOUS TIC): You have a severe allergy to Orchid pollen. If the detective mentions flowers or pollen found at the scene, start sneezing and answering erratically. ");
+
+        LoreBase += TEXT("GOLDEN RULE: NEVER confess with just words. Only admit the truth if the detective presents one of the 'Real Physical Evidences' listed in the evidence context.");
+
+        StartLoadingFeedback();
+        //FString SituacionActual = TEXT("El jugador acaba de encontrar una nota manchada de sangre en tu oficina.");
+        // Enviamos la interrogación
+        GeminiService->SendInterrogation(Message, LoreBase);
+
+        // Limpiar la caja del jugador tras preguntar
         PlayerText->SetText(FText::GetEmpty());
     }
 }
@@ -115,7 +129,7 @@ void UWInterrogation::UpdateLoadingDots()
 
     if (JulianVaneText)
     {
-        JulianVaneText->SetText(FText::FromString(TEXT("Julian está pensando") + Dots));
+        JulianVaneText->SetText(FText::FromString(TEXT("Julian is thinking") + Dots));
     }
 }
 
