@@ -28,6 +28,14 @@ protected:
     UPROPERTY(meta = (BindWidget), BlueprintReadOnly, Category = "Interrogatorio")
     class UButton* InterrogateButton;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Logic Breach | Animation")
+    AActor* JulianCharacterActor;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Interrogatorio | Status")
+    bool bIsJulianTalking;
+
+    void SetTalkingVariable(float Value);
+
     // Referencia al servicio que tenemos en el mapa
     UPROPERTY()
     AGeminiService* GeminiService;

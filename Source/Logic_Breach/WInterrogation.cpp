@@ -5,14 +5,27 @@
 #include "Components/MultiLineEditableText.h"
 #include "TimerManager.h"
 #include "Components/ScrollBox.h"
+#include "Components/SkeletalMeshComponent.h" // Indispensable para el Mesh
+#include "Animation/AnimInstance.h"           // Indispensable para el AnimBP
+#include "UObject/UnrealType.h"               // AQUÍ está la definición de FProperty y CastField
 
 void UWInterrogation::NativeConstruct()
 {
     Super::NativeConstruct();
 
-    if (GEngine)
+    // if (GEngine){ GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("C++: WInterrogation conectado con éxito")); }
+
+    TArray<AActor*> FoundActors;
+    UGameplayStatics::GetAllActorsWithTag(GetWorld(), TEXT("JulianCharacter"), FoundActors);
+
+    if (FoundActors.Num() > 0)
     {
-        GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("C++: WInterrogation conectado con éxito"));
+        JulianCharacterActor = FoundActors[0];
+        if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Cyan, TEXT("Julian detectado por Tag"));
+    }
+    else
+    {
+        if (GEngine) GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("ERROR: No se encontro actor con Tag 'JulianCharacter'"));
     }
 
     // 1. Buscamos al actor AGeminiService que está arrastrado en el mapa
@@ -55,7 +68,7 @@ void UWInterrogation::OnInterrogateClicked()
 
         StartLoadingFeedback();
         //FString SituacionActual = TEXT("El jugador acaba de encontrar una nota manchada de sangre en tu oficina.");
-        // Enviamos la interrogación
+        // Se envia la interrogación
         GeminiService->SendInterrogation(Message, LoreBase);
 
         // Limpiar la caja del jugador tras preguntar
@@ -86,9 +99,11 @@ void UWInterrogation::HandleJulianResponse(const FString& Reply)
 
 void UWInterrogation::PlayNextLetter()
 {
+    
     // Comprobamos si aún quedan letras por escribir
     if (CurrentLetterIndex < FullResponse.Len())
     {
+        bIsJulianTalking = true;
         CurrentLetterIndex++;
 
         // Cortamos el texto desde el inicio hasta la letra actual
@@ -107,6 +122,7 @@ void UWInterrogation::PlayNextLetter()
     {
         // Si ya terminamos de escribir todo, apagamos el cronómetro
         GetWorld()->GetTimerManager().ClearTimer(TimerHandle_Typewriter);
+        bIsJulianTalking = false;
     }
 }
 
@@ -138,3 +154,6 @@ void UWInterrogation::StopLoadingFeedback()
     // Detenemos el reloj de los puntos
     GetWorld()->GetTimerManager().ClearTimer(TimerHandle_Dots);
 }
+
+
+
