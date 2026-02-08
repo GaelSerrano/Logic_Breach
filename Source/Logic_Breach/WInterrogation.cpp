@@ -5,9 +5,9 @@
 #include "Components/MultiLineEditableText.h"
 #include "TimerManager.h"
 #include "Components/ScrollBox.h"
-#include "Components/SkeletalMeshComponent.h" // Indispensable para el Mesh
-#include "Animation/AnimInstance.h"           // Indispensable para el AnimBP
-#include "UObject/UnrealType.h"               // AQUÍ está la definición de FProperty y CastField
+#include "Components/SkeletalMeshComponent.h"
+#include "Animation/AnimInstance.h"
+#include "UObject/UnrealType.h"
 
 void UWInterrogation::NativeConstruct()
 {
@@ -52,7 +52,7 @@ void UWInterrogation::OnInterrogateClicked()
         // Obtenemos lo que el jugador escribió
         FString Message = PlayerText->GetText().ToString();
 
-        // --- EL LORE BASE (Preprogramado) ---
+        // Contexto de escena
         FString LoreBase = TEXT("YOU ARE JULIAN VANE. ACTING INSTRUCTIONS: ");
         LoreBase += TEXT("PERSONALITY: You are cynical, chain-smoking, and look at the detective with disdain. Use 1940s slang ('gumshoe', 'copper', 'bird', 'dame'). ");
 
@@ -112,7 +112,7 @@ void UWInterrogation::PlayNextLetter()
         // Lo mostramos en el Widget
         JulianVaneText->SetText(FText::FromString(CurrentText));
 
-        // Forzamos al ScrollBox a bajar automáticamente para seguir el texto
+        // Se forza al ScrollBox a bajar automáticamente para seguir el texto
         if (JulianScrollBox)
         {
             JulianScrollBox->ScrollToEnd();
@@ -120,9 +120,9 @@ void UWInterrogation::PlayNextLetter()
     }
     else
     {
-        // Si ya terminamos de escribir todo, apagamos el cronómetro
+        // Si ya termino de escribir todo, apagamos el cronómetro
         GetWorld()->GetTimerManager().ClearTimer(TimerHandle_Typewriter);
-        bIsJulianTalking = false;
+        bIsJulianTalking = false; 
     }
 }
 
@@ -130,7 +130,7 @@ void UWInterrogation::PlayNextLetter()
 void UWInterrogation::StartLoadingFeedback()
 {
     DotCount = 0;
-    // Iniciamos un timer que llama a UpdateLoadingDots cada 0.5 segundos
+    // Se inicia un timer que llama a UpdateLoadingDots cada 0.5 segundos
     GetWorld()->GetTimerManager().SetTimer(TimerHandle_Dots, this, &UWInterrogation::UpdateLoadingDots, 0.5f, true);
 }
 

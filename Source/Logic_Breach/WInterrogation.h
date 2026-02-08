@@ -2,11 +2,11 @@
 
 #include "CoreMinimal.h"
 #include "Blueprint/UserWidget.h"
-#include "GeminiService.h" // Importamos tu servicio de IA
+#include "GeminiService.h"
 #include "WInterrogation.generated.h"
 
 
-// Declaramos que usaremos estas clases para que el compilador no se queje
+
 class UMultiLineEditableText;
 class UEditableTextBox;
 class UButton;
@@ -17,8 +17,6 @@ class LOGIC_BREACH_API UWInterrogation : public UUserWidget
     GENERATED_BODY()
 
 protected:
-    // BlueprintReadOnly permite que los nodos de Blueprint vean la variable.
-    // Category ayuda a organizar los nodos en el buscador.
     UPROPERTY(meta = (BindWidget), BlueprintReadOnly, Category = "Interrogatorio")
     class UMultiLineEditableText* PlayerText;
 
@@ -36,14 +34,14 @@ protected:
 
     void SetTalkingVariable(float Value);
 
-    // Referencia al servicio que tenemos en el mapa
+    // Referencia al servicio que se tiene en el mapa
     UPROPERTY()
     AGeminiService* GeminiService;
 
     // Se ejecuta cuando el Widget se crea (BeginPlay)
     virtual void NativeConstruct() override;
 
-    // --- Variables para el efecto Máquina de Escribir ---
+    // Efecto maquina de escribir
 
     FTimerHandle TimerHandle_Typewriter;    // El reloj que ejecutara la funcion cada X milisegundos
     FString FullResponse;      // Se guarda la respuesta completa que nos envie Gemini
@@ -52,7 +50,7 @@ protected:
     UPROPERTY(meta = (BindWidget))
     class UScrollBox* JulianScrollBox;
    
-    void PlayNextLetter(); // --- Función interna del efecto ---
+    void PlayNextLetter(); // Función interna del efecto
 
 
     // El reloj para la animación de carga

@@ -17,7 +17,7 @@ AGeminiService::AGeminiService()
 void AGeminiService::SendInterrogation(FString PlayerMessage, FString EvidenceContext)
 {
     UE_LOG(LogTemp, Error, TEXT("TEST"));
-    // --- CARGA SEGURA DE API KEY --- 
+    // CARGA DE API KEY
     FString LocalApiKey;
     FString ConfigFilePath = FPaths::ProjectConfigDir() + TEXT("SecretKeys.ini");
 
@@ -36,11 +36,11 @@ void AGeminiService::SendInterrogation(FString PlayerMessage, FString EvidenceCo
         return;
     }
 
-    // --- CONFIGURACIÓN DE PETICIÓN ---
+    // CONFIGURACIÓN DE PETICIÓN
     TSharedRef<IHttpRequest, ESPMode::ThreadSafe> Request = FHttpModule::Get().CreateRequest();
     Request->OnProcessRequestComplete().BindUObject(this, &AGeminiService::OnResponseReceived);
 
-    FString ModelName = TEXT("gemini-3-flash-preview"); // Uso de Gemini 3 Flash Preview
+    FString ModelName = TEXT("gemini-3-flash-preview"); // Uso de GEMINI 3 Flash Preview
     FString FullUrl = FString::Printf(TEXT("https://generativelanguage.googleapis.com/v1beta/models/%s:generateContent?key=%s"), *ModelName, *LocalApiKey);
 
     Request->SetURL(FullUrl);
@@ -49,7 +49,7 @@ void AGeminiService::SendInterrogation(FString PlayerMessage, FString EvidenceCo
 
     UE_LOG(LogTemp, Log, TEXT("URL de envío: %s"), *FullUrl);
 
-    // --- CONSTRUCCIÓN DEL JSON ---
+    // CONSTRUCCIÓN DEL JSON
     TSharedPtr<FJsonObject> RootObject = MakeShareable(new FJsonObject());
     TArray<TSharedPtr<FJsonValue>> ContentsArray;
 
@@ -130,7 +130,6 @@ void AGeminiService::OnResponseReceived(FHttpRequestPtr Request, FHttpResponsePt
             }
             else {
                 GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, TEXT("Algo fallo bro."));
-                // Esto te dirá exactamente qué error tiene Google (ej: "API_KEY_INVALID" o "MODEL_NOT_FOUND")
                 FString ErrorResponse = Response->GetContentAsString();
                 GEngine->AddOnScreenDebugMessage(-1, 10.f, FColor::Red, FString::Printf(TEXT("Google Error: %s"), *ErrorResponse));
                 UE_LOG(LogTemp, Error, TEXT("Cuerpo del error: %s"), *ErrorResponse);
